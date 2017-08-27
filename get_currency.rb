@@ -9,7 +9,7 @@ class ExchangeRate
   end
 
   def date_incorrect? # проверка на выходные банка
-    @date.monday? || @date.sunday? ? true : false
+    @date.monday? || @date.sunday?
   end
 
   def correct_date # исправление на день или два если это выходной банка
