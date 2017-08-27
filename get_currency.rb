@@ -9,7 +9,7 @@ class ExchangeRate
   end
 
   def date_incorrect? # проверка на выходные банка
-    @date.monday? || @date.sunday?	
+    @date.monday? || @date.sunday?
   end
 
   def correct_date # исправление на день или два если это выходной банка
@@ -41,8 +41,8 @@ class ExchangeRate
   end
 
   def rate
-  	validate_date
-  	
+    validate_date
+
     3.times do |_i| # 3 раза стучимся, если необходимое значение не получено, возвращаем последнее сохранённое значение
       begin
         break unless get_rate.empty?
