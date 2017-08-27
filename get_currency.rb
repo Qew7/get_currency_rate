@@ -9,7 +9,7 @@ class ExchangeRate
   end
 
   def date_incorrect? # проверка на выходные банка
-    @date.monday? || @date.sunday?
+    @date.monday? || @date.sunday?	
   end
 
   def correct_date # исправление на день или два если это выходной банка
@@ -25,20 +25,24 @@ class ExchangeRate
   end
 
   def save_rate # писать решил в файл потому что бд для одного значения делать неадекватно
-    File.write('Последний курс', @rate)
+    File.write('LastVal', @rate)
   end
 
   def load_rate
-    File.exist?('Последний курс') ? File.read('Последний курс') : 'Нет сохранённого курса'
+    File.exist?('LastVal') ? File.read('LastVal') : 'Нет сохранённого курса'
   end
 
-  def rate
+  def validate_date
     return load_rate if @date > Time.now
 
     correct_date if date_incorrect?
 
     @date = @date.strftime('%d/%m/%Y')
+  end
 
+  def rate
+  	validate_date
+  	
     3.times do |_i| # 3 раза стучимся, если необходимое значение не получено, возвращаем последнее сохранённое значение
       begin
         break unless get_rate.empty?
@@ -60,7 +64,7 @@ begin
   currency = ExchangeRate.new(ARGV[0])
   p currency.rate
 rescue ArgumentError
-  p 'Формат даты не верен, последний курс доллара:'
+  p 'Формат даты не верен, LastVal доллара:'
   # гружу данные не методом потому что класс не инициализировался
-  p File.exist?('Последний курс') ? File.read('Последний курс') : 'Нет сохранённого курса'
+  p File.exist?('LastVal') ? File.read('LastVal') : 'Нет сохранённого курса'
 end
